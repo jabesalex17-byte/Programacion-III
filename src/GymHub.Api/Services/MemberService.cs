@@ -11,6 +11,15 @@ public class MemberService(IMemberRepository repository) : IMemberService
 
     public ReadMemberDto GetById(int id) => ReadMemberDto.From(Find(id));
 
+    public ReadMemberDto Create(CreateMemberDto dto) =>
+        ReadMemberDto.From(repository.Add(ToEntity(dto)));
+
     private Member Find(int id) =>
         repository.GetById(id) ?? throw new NotFoundException("Socio no encontrado");
+
+    private static Member ToEntity(CreateMemberDto dto) => new()
+    {
+        FirstName = dto.FirstName, LastName = dto.LastName, Age = dto.Age,
+        Email = dto.Email, PhoneNumber = dto.PhoneNumber, Active = dto.Active,
+    };
 }
