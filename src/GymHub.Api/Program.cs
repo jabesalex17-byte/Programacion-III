@@ -1,3 +1,5 @@
+using GymHub.Api.Repositories;
+using GymHub.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,9 @@ builder.Services.Configure<ApiBehaviorOptions>(o => o.SuppressModelStateInvalidF
 
 var dataDir = builder.Configuration["DataDir"] ?? Path.Combine(builder.Environment.ContentRootPath, "data");
 builder.Services.AddSingleton(dataDir);
+
+builder.Services.AddSingleton<IMemberRepository, MemberRepository>();
+builder.Services.AddScoped<IMemberService, MemberService>();
 
 var app = builder.Build();
 
