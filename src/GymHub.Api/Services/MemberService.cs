@@ -14,6 +14,22 @@ public class MemberService(IMemberRepository repository) : IMemberService
     public ReadMemberDto Create(CreateMemberDto dto) =>
         ReadMemberDto.From(repository.Add(ToEntity(dto)));
 
+    public ReadMemberDto Update(int id, UpdateMemberDto dto)
+    {
+        Find(id);
+        var member = ToEntity(dto);
+        repository.Update(id, member);
+        return ReadMemberDto.From(member);
+    }
+
+    public ReadMemberDto UpdateStatus(int id, UpdateMemberStatusDto dto)
+    {
+        var member = Find(id);
+        member.Active = dto.Active;
+        repository.Update(id, member);
+        return ReadMemberDto.From(member);
+    }
+
     private Member Find(int id) =>
         repository.GetById(id) ?? throw new NotFoundException("Socio no encontrado");
 
