@@ -30,6 +30,11 @@ public class MemberService(IMemberRepository repository) : IMemberService
         return ReadMemberDto.From(member);
     }
 
+    public void Delete(int id)
+    {
+        if (!repository.Delete(id)) throw new NotFoundException("Socio no encontrado");
+    }
+
     private Member Find(int id) =>
         repository.GetById(id) ?? throw new NotFoundException("Socio no encontrado");
 

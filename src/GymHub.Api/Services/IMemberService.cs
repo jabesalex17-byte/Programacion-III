@@ -9,4 +9,5 @@ public interface IMemberService
     ReadMemberDto Create(CreateMemberDto dto);
     ReadMemberDto Update(int id, UpdateMemberDto dto);
     ReadMemberDto UpdateStatus(int id, UpdateMemberStatusDto dto);
+    void Delete(int id);
 }
