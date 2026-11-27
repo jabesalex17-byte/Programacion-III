@@ -16,4 +16,7 @@ public class MemberRepository(string dataDir) : JsonRepository<Member>(dataDir),
                 || m.Email.Contains(q, StringComparison.OrdinalIgnoreCase))
             .ToList();
     }
+
+    public bool EmailExists(string email, int? exceptId = null) =>
+        GetAll().Any(m => m.Id != exceptId && string.Equals(m.Email, email, StringComparison.OrdinalIgnoreCase));
 }
