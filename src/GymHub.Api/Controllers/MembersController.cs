@@ -27,4 +27,11 @@ public class MembersController(IMemberService service) : ControllerBase
     [HttpPatch("{id:int}/status")]
     public IActionResult UpdateStatus(int id, [FromBody] UpdateMemberStatusDto dto) =>
         Ok(service.UpdateStatus(id, dto));
+
+    [HttpDelete("{id:int}")]
+    public IActionResult Delete(int id)
+    {
+        service.Delete(id);
+        return NoContent();
+    }
 }
