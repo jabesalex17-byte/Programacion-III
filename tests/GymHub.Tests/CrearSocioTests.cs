@@ -10,8 +10,8 @@ public class CrearSocioTests : IDisposable
     private readonly ApiFixture _api = new();
     public void Dispose() => _api.Dispose();
 
-    private static object Socio() =>
-        new { firstName = "Ana", lastName = "Pérez", age = 28, email = "ana@mail.com", phoneNumber = "809-555-0101" };
+    private static object Socio(string correo = "ana@mail.com") =>
+        new { firstName = "Ana", lastName = "Pérez", age = 28, email = correo, phoneNumber = "809-555-0101" };
 
     [Fact]
     public void Create_devuelve_un_ReadMemberDto_activo_y_con_id()
@@ -34,8 +34,8 @@ public class CrearSocioTests : IDisposable
     [Fact]
     public async Task El_socio_creado_aparece_en_la_lista()
     {
-        await _api.Send(HttpMethod.Post, "/api/members", Socio());
-        await _api.Send(HttpMethod.Post, "/api/members", Socio());
+        await _api.Send(HttpMethod.Post, "/api/members", Socio("a@mail.com"));
+        await _api.Send(HttpMethod.Post, "/api/members", Socio("b@mail.com"));
         var (_, list) = await _api.Send(HttpMethod.Get, "/api/members");
         Assert.Equal(2, list.GetArrayLength());
         Assert.Equal(2, list[1].GetProperty("id").GetInt32());
