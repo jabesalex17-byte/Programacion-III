@@ -14,8 +14,23 @@
 
   <main>
     <p id="message" role="alert"></p>
+
+    <section id="lista">
+      <h2>Socios</h2>
+      <input id="search" type="search" placeholder="Buscar por nombre, apellido o correo…">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Nombre</th><th>Apellido</th><th>Edad</th><th>Correo</th><th>Teléfono</th><th>Activo</th><th></th></tr>
+          </thead>
+          <tbody id="socios"></tbody>
+        </table>
+      </div>
+      <p id="empty" hidden>No hay socios todavía.</p>
+    </section>
   </main>
 
   <script src="/js/api.js"></script>
+  <script src="/js/listar.js"></script>
 </body>
 </html>
