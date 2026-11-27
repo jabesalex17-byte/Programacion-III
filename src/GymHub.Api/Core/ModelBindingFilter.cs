@@ -14,7 +14,7 @@ public class ModelBindingFilter : IActionFilter
 
         var missingBody = context.ActionDescriptor.Parameters
             .Any(p => p.BindingInfo?.BindingSource?.Id == "Body"
-                      && context.ActionArguments.TryGetValue(p.Name, out var v) && v is null);
+                      && (!context.ActionArguments.TryGetValue(p.Name, out var v) || v is null));
         if (missingBody) throw new DataValidationException("El cuerpo de la petición es obligatorio");
     }
 
