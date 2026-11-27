@@ -6,4 +6,6 @@ namespace GymHub.Api.Repositories;
 public interface IMemberRepository : IRepository<Member>
 {
     List<Member> Search(string? query);
+
+    bool EmailExists(string email, int? exceptId = null);
 }

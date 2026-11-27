@@ -11,12 +11,16 @@ public class MemberService(IMemberRepository repository) : IMemberService
 
     public ReadMemberDto GetById(int id) => ReadMemberDto.From(Find(id));
 
-    public ReadMemberDto Create(CreateMemberDto dto) =>
-        ReadMemberDto.From(repository.Add(ToEntity(dto)));
+    public ReadMemberDto Create(CreateMemberDto dto)
+    {
+        Validate(dto, exceptId: null);
+        return ReadMemberDto.From(repository.Add(ToEntity(dto)));
+    }
 
     public ReadMemberDto Update(int id, UpdateMemberDto dto)
     {
         Find(id);
+        Validate(dto, exceptId: id);
         var member = ToEntity(dto);
         repository.Update(id, member);
         return ReadMemberDto.From(member);
@@ -38,9 +42,18 @@ public class MemberService(IMemberRepository repository) : IMemberService
     private Member Find(int id) =>
         repository.GetById(id) ?? throw new NotFoundException("Socio no encontrado");
 
+    private void Validate(CreateMemberDto dto, int? exceptId)
+    {
+        DtoValidator.ValidateOrThrow(dto);
+        if (repository.EmailExists(dto.Email.Trim(), exceptId))
+            throw new DataValidationException("Ya existe un socio con ese correo");
+    }
+
     private static Member ToEntity(CreateMemberDto dto) => new()
     {
-        FirstName = dto.FirstName, LastName = dto.LastName, Age = dto.Age,
-        Email = dto.Email, PhoneNumber = dto.PhoneNumber, Active = dto.Active,
+        FirstName = dto.FirstName.Trim(), LastName = dto.LastName.Trim(), Age = dto.Age,
+        Email = dto.Email.Trim(),
+        PhoneNumber = string.IsNullOrWhiteSpace(dto.PhoneNumber) ? null : dto.PhoneNumber.Trim(),
+        Active = dto.Active,
     };
 }
