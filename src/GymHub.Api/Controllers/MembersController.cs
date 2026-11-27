@@ -20,4 +20,11 @@ public class MembersController(IMemberService service) : ControllerBase
         var created = service.Create(dto);
         return Created($"/api/members/{created.Id}", created);
     }
+
+    [HttpPut("{id:int}")]
+    public IActionResult Update(int id, [FromBody] UpdateMemberDto dto) => Ok(service.Update(id, dto));
+
+    [HttpPatch("{id:int}/status")]
+    public IActionResult UpdateStatus(int id, [FromBody] UpdateMemberStatusDto dto) =>
+        Ok(service.UpdateStatus(id, dto));
 }
