@@ -1,0 +1,7 @@
+**/data/*.json
+.vs/
+.vscode/
+*.log
+.DS_Store
+bin/
+obj/
